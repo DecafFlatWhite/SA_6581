@@ -15,10 +15,9 @@ module acc(
     // Clock at 1 MHz
 
     reg [23:0] accumulator;
-
     wire [23:0] freq_scaled;
 
-    assign freq_scaled = {freq, 12'd0};  
+    assign freq_scaled = (freq * 16.777216 /*Magic number LOL*/);  
 
     always_ff @(posedge clk or negedge rst) begin
         if (!rst) begin
