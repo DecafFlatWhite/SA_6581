@@ -5,7 +5,7 @@ A hardware emulator of MOS 6581 SID
 ## Milestones
 
 1. [x] Accumulator
-2. [ ] Waveform Selector/Generator 
+2. [x] Waveform Selector/Generator 
 3. [ ] Envelope generator
 4. [ ] AM
 5. [ ] Connect all three together and test
