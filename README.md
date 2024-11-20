@@ -4,14 +4,12 @@ A hardware emulator of MOS 6581 SID
 
 ## Milestones
 
-~~1. [ ] Tone oscillator/Waveform generator~~
-1. [ ] Accumulator
-2. [ ] Waveform Generator 
-3. [ ] Waveform Selector
-4. [ ] Envelope generator
-5. [ ] AM
-6. [ ] Connect all three together and test
-7. [ ] A real regfile and a clock divider
-8. [ ] Top module without the filter
-9. [ ] DAC
-10. [ ] (Do we actually need this?) Filter
+1. [x] Accumulator
+2. [ ] Waveform Selector/Generator 
+3. [ ] Envelope generator
+4. [ ] AM
+5. [ ] Connect all three together and test
+6. [ ] A real regfile and a clock divider
+7. [ ] Top module without the filter
+8. [ ] DAC
+9. [ ] (Do we actually need this?) Filter
