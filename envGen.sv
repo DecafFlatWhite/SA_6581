@@ -10,7 +10,7 @@ module envGen(
 
     // We can just use one LUT to get numbers of cycles needed for all of the 
     // state since the decay/release rate is just three times of the attack rate
-    const bit [22:0] attackTable [15:0] = '{
+    const bit [22:0] attackTable [0:15] = '{
         23'd2000,    23'd8000,    23'd16000,   23'd24000,
         23'd38000,   23'd56000,   23'd68000,   23'd80000,
         23'd100000,  23'd250000,  23'd500000,  23'd800000,
