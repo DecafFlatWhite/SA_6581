@@ -6,7 +6,7 @@ A hardware emulator of MOS 6581 SID
 
 1. [x] Accumulator
 2. [x] Waveform Selector/Generator 
-3. [ ] Envelope generator
+3. [x] Envelope generator
 4. [ ] AM
 5. [ ] Connect all three together and test
 6. [ ] A real regfile and a clock divider
