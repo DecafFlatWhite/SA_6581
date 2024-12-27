@@ -20,8 +20,8 @@ module acc(
     reg [31:0] cycleCount;
     // 48-bit is probably not nessesary but I dont want to deal with overflow...
     reg [23:0] accumulator;
-    wire [47:0] zeroOutput;
-    wire [31:0] eqnFreq;
+    reg [47:0] zeroOutput;
+    reg [31:0] eqnFreq;
     
 
     always_ff @(posedge clk or negedge rst) begin
@@ -37,10 +37,10 @@ module acc(
             // Since the 16-bit freq is not the actual frequency, the value needs to be
             // multipled by 0.0596. 
             // The value is multiplied by 10000 to prevent any floating point shit.
-            assign zeroOutput = (10000 * (12'd4095 - pw) * 20'd1000000) / (12'd4095 * freq * 596);
+            zeroOutput <= (10000 * (12'd4095 - pw) * 20'd1000000) / (12'd4095 * freq * 596);
             // For the equvalent frequency we dont need to deal with real world 
             // frequency, so this value is not multiplied
-            assign eqnFreq = (freq * 12'd4095) / pw;
+            eqnFreq <= (freq * 12'd4095) / pw;
             // "The shift register was clocked by one of the intermediate bits
             // of the accumulator to keep the frequency content of the noise
             // waveform relatively the same as the pitched waveforms."

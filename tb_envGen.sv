@@ -28,8 +28,8 @@ module envtb();
     always @(posedge clk) begin
         if(dut.state == 2'b10) begin
             #100;
-            control =  8'b00000000;
+            control = 8'b00000000;
         end
     end
-    
+
 endmodule

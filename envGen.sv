@@ -2,11 +2,12 @@ module envGen(
     input clk, rst,
     input [7:0] control,
     // Combine the two regs as the input: {reg#05, reg#06}
+    // Consult the datasheet for details
     input [15:0] adsr,
 
     output reg [7:0] volOut 
 );  
-    // How many cycles it'll take to finish the whole attack cycle?
+    // How many clock cycles it'll take to finish the whole attack cycle?
 
     // We can just use one LUT to get numbers of cycles needed for all of the 
     // state since the decay/release rate is just three times of the attack rate
