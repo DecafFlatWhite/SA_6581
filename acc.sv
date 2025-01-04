@@ -1,9 +1,12 @@
+// Untested: SYNC & TEST
 module acc(
     input clk, rst,
+    input [7:0] control,
     input [15:0] freq,
     input [11:0] pw,
-    //input [11:0] syncIn,
-    //output [11:0] syncOut,
+    input [15:0] syncFreq,
+
+    output reg [15:0] syncOut,
     output reg [23:0] waveOut,
     output reg [11:0] noiseOut
 );
@@ -22,25 +25,37 @@ module acc(
     reg [23:0] accumulator;
     reg [47:0] zeroOutput;
     reg [31:0] eqnFreq;
-    
 
+    reg [15:0] freqSelected;
+    
     always_ff @(posedge clk or negedge rst) begin
-        if (!rst) begin
+        if (!rst || control[3]) begin
             state <= 1'b0;
             // Assign a random non-zero value
             random <= 23'd4194300;
+            zeroOutput <= 48'd0;
             accumulator <= 24'd0;
             cycleCount <= 32'd0;  
             flag <= 1'b0; 
+            freqSelected <= 16'd0;
         end else begin
+            case (control[1])
+                1'b0: freqSelected <= freq;
+                1'b1: freqSelected <= syncFreq;
+                default: freqSelected <= 16'd0;
+            endcase
             // Count how much cycle it needs to wait before the actual output.
             // Since the 16-bit freq is not the actual frequency, the value needs to be
             // multipled by 0.0596. 
             // The value is multiplied by 10000 to prevent any floating point shit.
-            zeroOutput <= (10000 * (12'd4095 - pw) * 20'd1000000) / (12'd4095 * freq * 596);
+
+            // 1/2/25 note: This is probably not necessary cause there's 
+            // truncation, but I'm not gonna change it for now cause it's
+            // working.
+            zeroOutput <= (10000 * (12'd4095 - pw) * 20'd1000000) / (12'd4095 * freqSelected * 596);
             // For the equvalent frequency we dont need to deal with real world 
             // frequency, so this value is not multiplied
-            eqnFreq <= (freq * 12'd4095) / pw;
+            eqnFreq <= (freqSelected * 12'd4095) / pw;
             // "The shift register was clocked by one of the intermediate bits
             // of the accumulator to keep the frequency content of the noise
             // waveform relatively the same as the pitched waveforms."
@@ -80,20 +95,25 @@ module acc(
         end
     end
 
-    always_comb begin
-        case (state)
-            1'b0: begin 
-                waveOut = 24'd0;
-                noiseOut = 12'd0;
+    always_comb begin 
+        syncOut = freq;
+        if (control[3]) begin
+            waveOut = 24'd0;
+            noiseOut = 12'd0;
+        end else begin
+            case (state)
+                1'b0: begin 
+                    waveOut = 24'd0;
+                    noiseOut = 12'd0;
 
-            end
-            1'b1: begin
-                waveOut = accumulator;
-                noiseOut = random[22:11];
-            end
-            default: ;
-        endcase
-
+                end
+                1'b1: begin
+                    waveOut = accumulator;
+                    noiseOut = random[22:11];
+                end
+                default: ;
+            endcase
+        end
     end
 
 endmodule
